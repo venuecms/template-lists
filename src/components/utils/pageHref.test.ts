@@ -10,22 +10,33 @@ describe("resolvePageHref", () => {
     });
   });
 
+  it("routes the reserved root artists page to its own index, not /p", () => {
+    // /artists has a real route; /p/artists renders an empty stub, so a nav
+    // item or listing that linked there would be a dead end.
+    expect(resolvePageHref({ slug: "artists", type: "CONTENT" }).href).toBe(
+      "/artists",
+    );
+  });
+
   it.each(["events", "archive", "shop"])(
-    "routes the reserved root %s page to its own index, not /p",
+    "routes the root %s page through /p, where its content renders",
     (slug) => {
-      // These slugs have real routes; /p/<slug> renders an empty stub, so a
-      // nav item or listing that linked there would be a dead end.
-      expect(resolvePageHref({ slug, type: "CONTENT" }).href).toBe(`/${slug}`);
+      expect(resolvePageHref({ slug, type: "CONTENT" }).href).toBe(
+        `/p/${slug}`,
+      );
     },
   );
 
   it("leaves a nested page on /p even when it shares a reserved slug", () => {
-    // The reservation is about root routes; a child page named "shop" is a
-    // normal page and /p/shop is where it lives.
+    // The reservation is about root routes; a child page named "artists" is a
+    // normal page and /p/artists is where it lives.
     expect(
-      resolvePageHref({ slug: "shop", type: "CONTENT", parentId: "parent-id" })
-        .href,
-    ).toBe("/p/shop");
+      resolvePageHref({
+        slug: "artists",
+        type: "CONTENT",
+        parentId: "parent-id",
+      }).href,
+    ).toBe("/p/artists");
   });
 
   it("routes a news page to /p, where the news view renders it", () => {

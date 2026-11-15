@@ -5,10 +5,13 @@ import type { Page as VenuePage } from "@venuecms/sdk-next";
  * so it can carry a title and a nav position, but linking to /p/<slug> would
  * land on an empty stub instead of the index that actually renders them.
  *
- * Only reserved at the root: a nested page is free to be slugged "shop", and
- * /p/shop is where it lives.
+ * Only reserved at the root: a nested page is free to be slugged "artists",
+ * and /p/artists is where it lives.
+ *
+ * Events, archive and shop pages render their own CMS content at /p/<slug>;
+ * their old index routes redirect there.
  */
-const StaticRootSlugs = ["artists", "events", "archive", "shop"];
+const StaticRootSlugs = ["artists"];
 
 // `type` and `parentId` are optional because the page tree reads its records
 // out of a loosely typed tree-view metadata bag.

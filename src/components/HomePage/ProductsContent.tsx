@@ -45,7 +45,7 @@ export async function ProductsContent() {
       <div className="w-full grid-cols-3 sm:grid">
         <span></span>
         <span></span>
-        <Link className="flex w-full sm:relative sm:flex-row" href="/shop">
+        <Link className="flex w-full sm:relative sm:flex-row" href="/p/shop">
           {t("see_all")}
         </Link>
       </div>

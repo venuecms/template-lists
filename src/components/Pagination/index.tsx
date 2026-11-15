@@ -39,7 +39,7 @@ export const PaginationLinks = ({
   /**
    * Whether following a page link scrolls to the top, as Next does by default.
    *
-   * True suits a pager that owns its page: `/archive` and `/shop` are the
+   * True suits a pager that owns its page: on `/artists` the pager is the
    * listing, so the new page's first record is what a reader wants in view.
    * A listing block is the exception — it sits inside an article the reader is
    * part-way through, and scrolling to the top there abandons the content they
