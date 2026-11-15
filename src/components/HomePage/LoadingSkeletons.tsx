@@ -68,7 +68,7 @@ export function ProductsSkeleton() {
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="flex flex-col gap-8 pb-8 sm:gap-0">
             <div className="pb-3">
-              <Skeleton className="aspect-square h-auto" />
+              <Skeleton className="aspect-square" />
             </div>
             {/* A thin bar centred in one line of text, so the card is the
                 same height as the loaded one. */}

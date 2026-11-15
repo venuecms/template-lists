@@ -12,8 +12,22 @@ export const ListSkeleton = ({
   ));
 };
 
+/**
+ * A placeholder bar, one line of text tall by default. Given an `aspect-*`
+ * class it drops that default height and sizes from its width instead: with
+ * both a width and a height set, the browser ignores aspect-ratio, so an
+ * "aspect-square" box would otherwise render as a 16px bar.
+ */
 export const Skeleton = ({ className }: { className?: string }) => {
+  const hasAspect = /(^|\s|:)aspect-/.test(className ?? "");
+
   return (
-    <div className={cn("h-4 w-full bg-primary opacity-[3%]", className)} />
+    <div
+      className={cn(
+        "w-full bg-primary opacity-[3%]",
+        !hasAspect && "h-4",
+        className,
+      )}
+    />
   );
 };
