@@ -19,7 +19,8 @@ function ProfilesListError() {
   );
 }
 
-function ProfilesListSkeleton() {
+/** Also the /artists route's loading state, so both show the same grid. */
+export function ProfilesListSkeleton() {
   return (
     <TwoColumnLayout>
       <ColumnLeft className="text-sm text-secondary">
