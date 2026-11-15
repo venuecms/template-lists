@@ -15,20 +15,11 @@ import { Link } from "@/lib/i18n";
 
 import { formatDate } from "@/components/utils";
 import { renderedStyles } from "@/components/utils/styles";
+import { hasTag } from "@/components/utils/tags";
 
-const FEATURED_TAG = "featured";
-
-/**
- * The API ignores the `tags` filter on the profiles endpoint, so profiles are
- * filtered here. The SDK types a profile tag as `{ tagId, tag: { title } }`,
- * but the API returns `{ id, title }`; both shapes are accepted.
- */
-const isFeatured = (profile: VenueProfile) =>
-  profile.tags?.some((tag) => {
-    const { title } =
-      (tag as { tag?: { title?: string } }).tag ?? (tag as { title?: string });
-    return title?.toLowerCase() === FEATURED_TAG;
-  }) ?? false;
+// The API ignores the `tags` filter on the profiles endpoint, so profiles are
+// filtered by tag here.
+const isFeatured = (profile: VenueProfile) => hasTag(profile, "featured");
 
 export async function FeaturedProfilesContent({ locale }: { locale: string }) {
   await connection();

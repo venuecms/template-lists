@@ -3,6 +3,7 @@ import { Params } from "@/types";
 import { getSite } from "@venuecms/sdk-next";
 
 import { FeaturedEventsSection } from "@/components/HomePage/FeaturedEventsSection";
+import { FeaturedPagesSection } from "@/components/HomePage/FeaturedPagesSection";
 import { FeaturedProfilesSection } from "@/components/HomePage/FeaturedProfilesSection";
 import { ProductsSection } from "@/components/HomePage/ProductsSection";
 import { setupSSR } from "@/components/utils";
@@ -40,6 +41,7 @@ const Home = async ({ params }: { params: Promise<Params> }) => {
       <FeaturedEventsSection locale={locale} />
       <FeaturedProfilesSection locale={locale} />
       <ProductsSection />
+      <FeaturedPagesSection locale={locale} />
     </>
   );
 };
