@@ -22,7 +22,8 @@ export async function FeaturedEventsContent({ locale }: { locale: string }) {
   return (
     <>
       {showHeroImage ? (
-        <div className="w-vw absolute left-0 top-0 -z-30 h-svh w-screen bg-red-300">
+        // Fixed to the viewport so the page content scrolls over the image.
+        <div className="fixed inset-0 -z-30 bg-red-300">
           <VenueImage aspect="video" image={webSiteSettings?.image} />
           {noHeroOverlay ? null : (
             <div className="absolute left-0 top-0 h-full w-full bg-[#1F1C1F] bg-cover bg-center bg-no-repeat opacity-80">
