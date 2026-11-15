@@ -68,9 +68,10 @@ export const EventListingBlock = ({
       label={t("events")}
     >
       {/* Tour-date lines, as on the home page. A past list, which can run
-          back years, gets a heading per year. */}
+          back years, gets a heading per year. No top padding, so the first
+          line sits on the page title's baseline when the list opens a page. */}
       {isPastEventList(records, Date.now()) ? (
-        <div className="flex flex-col gap-8 py-4">
+        <div className="flex flex-col gap-8 pb-4">
           {groupEventsByYear(records, timeZone).map(({ year, events }) => (
             <section key={year} className="flex flex-col gap-2">
               <h3 className="text-secondary">{year}</h3>
@@ -80,7 +81,7 @@ export const EventListingBlock = ({
         </div>
       ) : (
         <EventLines
-          className="py-4"
+          className="pb-4"
           events={records}
           timeZone={timeZone}
           withArtists
@@ -107,7 +108,7 @@ export const NewsListingBlock = ({
       records={records}
       label={t("news")}
     >
-      <PagesList className="py-4">
+      <PagesList className="pb-4">
         {records.map((article) => (
           <ListPage
             key={article.id}
@@ -136,7 +137,7 @@ export const PageListingBlock = ({
   }
 
   return (
-    <PagesList className="py-4">
+    <PagesList className="pb-4">
       {records.map((page) => (
         <ListPage
           key={page.id}
