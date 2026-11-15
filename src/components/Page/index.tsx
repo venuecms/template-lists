@@ -19,6 +19,7 @@ import {
   ColumnRight,
   TwoColumnLayout,
   TwoSubColumnLayout,
+  fadePastTitle,
   stickyColumnTitle,
 } from "../layout";
 
@@ -110,7 +111,7 @@ const PageSection = ({
         {aside}
       </ColumnLeft>
 
-      <ColumnRight>
+      <ColumnRight className={fadePastTitle}>
         <VenueContent
           className={pageBodyStyles}
           content={content}

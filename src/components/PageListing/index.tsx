@@ -7,6 +7,7 @@ import {
   ColumnLeft,
   ColumnRight,
   TwoColumnLayout,
+  fadePastTitle,
   stickyColumnTitle,
 } from "@/components/layout";
 
@@ -75,7 +76,7 @@ export const PageListing = ({
               </p>
             ) : null}
           </ColumnLeft>
-          <ColumnRight>{body}</ColumnRight>
+          <ColumnRight className={fadePastTitle}>{body}</ColumnRight>
         </TwoColumnLayout>
       );
   }
