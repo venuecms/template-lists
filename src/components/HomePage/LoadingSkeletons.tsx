@@ -63,10 +63,11 @@ export function FeaturedProfilesSkeleton() {
 export function ProductsSkeleton() {
   return (
     <section className="py-20">
-      {/* Same grid and card spacing as ProductsContent / ListProduct. */}
-      <div className="grid grid-cols-2 gap-8 pb-20 sm:max-w-full sm:grid-cols-4 xl:grid-cols-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex flex-col gap-8 pb-8 sm:gap-0">
+      {/* Same grid and card spacing as ProductsContent / ListProduct at the
+          default of two columns. */}
+      <div className="grid grid-cols-1 gap-8 sm:max-w-full sm:grid-cols-2">
+        {[1, 2].map((i) => (
+          <div key={i} className="flex flex-col gap-8 pb-8 sm:gap-0 sm:px-24">
             <div className="pb-3">
               <Skeleton className="aspect-square" />
             </div>
