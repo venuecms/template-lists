@@ -63,17 +63,17 @@ export function FeaturedProfilesSkeleton() {
 export function ProductsSkeleton() {
   return (
     <section className="py-20">
-      <div className="pb-8">
-        <Skeleton className="w-16" />
-      </div>
-
+      {/* Same grid and card spacing as ProductsContent / ListProduct. */}
       <div className="grid grid-cols-2 gap-8 pb-20 sm:max-w-full sm:grid-cols-4 xl:grid-cols-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex flex-col gap-3">
-            <Skeleton className="aspect-square" />
-            <div className="flex flex-col gap-1">
-              <Skeleton className="h-3 w-1/2" />
-              <Skeleton className="w-3/4" />
+          <div key={i} className="flex flex-col gap-8 pb-8 sm:gap-0">
+            <div className="pb-3">
+              <Skeleton className="aspect-square h-auto" />
+            </div>
+            {/* A thin bar centred in one line of text, so the card is the
+                same height as the loaded one. */}
+            <div className="flex h-6 items-center">
+              <Skeleton className="h-3 w-3/4" />
             </div>
           </div>
         ))}

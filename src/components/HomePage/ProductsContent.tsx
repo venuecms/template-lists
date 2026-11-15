@@ -8,19 +8,21 @@ import { ListProduct } from "@/components/ListProduct";
 
 import { HERO_FADE_TRIGGER } from "./heroFade";
 
+/** Products shown on the home page; the rest are on the shop page. */
+const PRODUCT_LIMIT = 4;
+
 export async function ProductsContent() {
   await connection();
 
   const [{ data: products }, { data: site }, t] = await Promise.all([
-    getProducts({ limit: 10 }),
+    getProducts({ limit: PRODUCT_LIMIT }),
     getSite(),
     getTranslations("shop"),
   ]);
 
   if (!site) return null;
 
-  const topProducts = products?.records.slice(0, 4);
-  const moreProducts = products?.records.slice(4);
+  const topProducts = products?.records.slice(0, PRODUCT_LIMIT);
 
   return (
     <section className="py-20">
@@ -40,13 +42,6 @@ export async function ProductsContent() {
             ))
           : t("no_products_found")}
       </div>
-      {moreProducts?.length ? (
-        <div className="grid grid-cols-2 gap-8 sm:max-w-full lg:grid-cols-[repeat(4,minmax(1rem,32rem))] xl:grid-cols-[repeat(6,minmax(1rem,32rem))]">
-          {moreProducts.map((product) => (
-            <ListProduct key={product.slug} product={product} site={site} />
-          ))}
-        </div>
-      ) : null}
       <div className="w-full grid-cols-3 sm:grid">
         <span></span>
         <span></span>
