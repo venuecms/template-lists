@@ -30,10 +30,14 @@ export const ListProduct = ({
     >
       <div className="w-full pb-3 sm:w-auto sm:max-w-full">
         <Link href={`/shop/${product.slug}`}>
-          <VenueImage image={product.image} aspect="square" />
+          <VenueImage
+            image={product.image}
+            aspect="square"
+            className="motion-safe:transition-transform motion-safe:duration-1000 motion-safe:hover:scale-[1.02]"
+          />
         </Link>
       </div>
-      <div className="flex flex-col">
+      <div className="flex min-w-0 flex-row flex-wrap gap-x-2 break-words">
         {product.author ? (
           <div className="text-secondary">{product.author}</div>
         ) : null}

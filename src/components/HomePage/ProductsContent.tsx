@@ -6,6 +6,8 @@ import { Link } from "@/lib/i18n";
 
 import { ListProduct } from "@/components/ListProduct";
 
+import { HERO_FADE_TRIGGER } from "./heroFade";
+
 export async function ProductsContent() {
   await connection();
 
@@ -22,7 +24,11 @@ export async function ProductsContent() {
 
   return (
     <section className="py-20">
-      <div className="grid grid-cols-2 gap-8 pb-20 sm:max-w-full sm:grid-cols-4 xl:grid-cols-4">
+      <div
+        className="grid grid-cols-2 gap-8 pb-20 sm:max-w-full sm:grid-cols-4 xl:grid-cols-4"
+        // Fades the home page hero out as the first row scrolls into view.
+        {...{ [HERO_FADE_TRIGGER]: "" }}
+      >
         {topProducts?.length
           ? topProducts.map((product) => (
               <ListProduct
@@ -45,7 +51,7 @@ export async function ProductsContent() {
         <span></span>
         <span></span>
         <Link className="flex w-full sm:relative sm:flex-row" href="/shop">
-          → {t("see_all_works")}
+          {t("see_all")}
         </Link>
       </div>
     </section>
