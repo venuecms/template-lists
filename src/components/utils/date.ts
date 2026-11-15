@@ -25,6 +25,17 @@ export const formatDate = ({
   return format(new TZDate(date, timeZone), template);
 };
 
+/**
+ * An event's date, in the venue's zone. A single day uses `template` (and the
+ * time, with `withTime`). Several days collapse what they share:
+ *
+ *   same month:       5—7 Dec 2025
+ *   different months: 3 Sep — 4 Oct 2025
+ *   different years:  3 Dec 2025 — 4 Jan 2026
+ *
+ * Days are compared as calendar dates in `timeZone`, so an event ending after
+ * midnight UTC still reads as the day it was in the venue.
+ */
 export const formatDateRange = ({
   start,
   end,
@@ -33,31 +44,30 @@ export const formatDateRange = ({
   template = "EEEE d MMMM yyyy",
 }: {
   start: string;
-  end: string;
-  timeZone: string;
+  end?: string | null;
+  timeZone?: string;
   withTime?: boolean;
   template?: string;
 }) => {
   const startDate = new TZDate(start, timeZone);
-  const endDate = new TZDate(end, timeZone);
+  // No end means a single day; TZDate would otherwise read it as now.
+  const endDate = end ? new TZDate(end, timeZone) : startDate;
 
-  const isMultiDay =
-    startDate.getDay() !== endDate.getDay() ||
-    startDate.getMonth() !== endDate.getMonth() ||
-    startDate.getFullYear() !== endDate.getFullYear();
+  const sameYear = startDate.getFullYear() === endDate.getFullYear();
+  const sameMonth = sameYear && startDate.getMonth() === endDate.getMonth();
+  const sameDay = sameMonth && startDate.getDate() === endDate.getDate();
 
-  if (!isMultiDay) {
+  if (sameDay) {
     return formatDate({ date: start, withTime, template, timeZone });
   }
 
-  const isSameMonth =
-    startDate.getMonth() === endDate.getMonth() &&
-    startDate.getFullYear() === endDate.getFullYear();
+  const endText = format(endDate, "d MMM yyyy");
 
-  if (isSameMonth) {
-    return `${format(new TZDate(start, timeZone), "d")}—${formatDate({ date: end, withTime: false, timeZone, template: "d MMMM yyyy" })}`;
+  if (sameMonth) {
+    return `${format(startDate, "d")}—${endText}`;
   }
-
-  return `${format(new TZDate(start, timeZone), "d")} ${format(new TZDate(startDate, timeZone), "MMMM")} — ${format(new TZDate(endDate, timeZone), "d")} 
-       ${format(new TZDate(endDate, timeZone), "MMMM")} ${format(new TZDate(endDate, timeZone), "yyyy")}`;
+  if (sameYear) {
+    return `${format(startDate, "d MMM")} — ${endText}`;
+  }
+  return `${format(startDate, "d MMM yyyy")} — ${endText}`;
 };
