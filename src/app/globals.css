@@ -271,3 +271,23 @@ html.darkGreyCM {
     }
   }
 }
+
+/* Content arriving on page load: rises into place as it fades in. A plain
+   class rather than a Tailwind arbitrary value, so it's always in the CSS
+   whatever the dev server last scanned. Left still for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .slide-up-on-load {
+    animation: slide-up 700ms ease-out both;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

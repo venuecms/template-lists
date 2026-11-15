@@ -64,7 +64,8 @@ export const PageListing = ({
   switch (layout) {
     case "products":
       // Little above: the grid is the page, so it starts just under the header.
-      return <section className="pb-20 pt-6">{body}</section>;
+      // Slides up into place on load (.slide-up-on-load in globals.css).
+      return <section className="slide-up-on-load pb-20 pt-6">{body}</section>;
     case "events":
     case "profiles":
       return (

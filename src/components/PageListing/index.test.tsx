@@ -96,7 +96,7 @@ describe("PageListing", () => {
   it("frames the products listing in a full-width section", async () => {
     const html = await renderListing({ layout: "products", content: body });
 
-    expect(html).toContain('<section class="pb-20 pt-6">');
+    expect(html).toContain('<section class="slide-up-on-load pb-20 pt-6">');
   });
 
   it.each(["events", "profiles"] as const)(
