@@ -28,7 +28,7 @@
 import type { ListingProps } from "@venuecms/sdk-next";
 import { useTranslations } from "next-intl";
 
-import { EventsList, ListEvent } from "@/components/EventList";
+import { EventLines } from "@/components/EventLine";
 import { ListProduct } from "@/components/ListProduct";
 import { ListPage, PagesList } from "@/components/PageList";
 import { ProfileCompact } from "@/components/ProfileCompact";
@@ -61,11 +61,13 @@ export const EventListingBlock = ({
       records={records}
       label={t("events")}
     >
-      <EventsList className="gap-y-12 py-4">
-        {records.map((event) => (
-          <ListEvent key={event.id} event={event} site={site} withImage />
-        ))}
-      </EventsList>
+      {/* Tour-date lines, as on the home page. */}
+      <EventLines
+        className="py-4"
+        events={records}
+        timeZone={site.timeZone ?? undefined}
+        withArtists
+      />
     </PaginatedListing>
   );
 };

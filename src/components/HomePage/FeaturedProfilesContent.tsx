@@ -9,11 +9,10 @@ import {
   getSite,
 } from "@venuecms/sdk-next";
 import { connection } from "next/server";
-import { ReactNode } from "react";
 
 import { Link } from "@/lib/i18n";
 
-import { formatDate } from "@/components/utils";
+import { EventLines } from "@/components/EventLine";
 import { renderedStyles } from "@/components/utils/styles";
 import { hasTag } from "@/components/utils/tags";
 
@@ -88,42 +87,7 @@ const ProfileEvents = ({
       >
         {content.title}
       </Link>
-      <ul className="flex flex-col">
-        {events.map((event) => {
-          const date = formatDate({
-            date: event.startDate,
-            withTime: false,
-            timeZone,
-            template: "d MMM",
-          });
-          const location = event.location
-            ? [
-                getLocalizedContent(event.location.localizedContent, locale)
-                  .content.title,
-                event.location.city,
-                event.location.country,
-              ]
-                .filter(Boolean)
-                // A venue named after its city would otherwise repeat.
-                .filter((part, i, parts) => parts.indexOf(part) === i)
-            : [];
-
-          return (
-            <li key={event.id}>
-              <ExternalLink
-                href={firstTicketLink(event) ?? event.location?.externalLink}
-              >
-                {[date, ...location].map((part, i) => (
-                  <span key={i}>
-                    {i > 0 ? <Separator /> : null}
-                    {part}
-                  </span>
-                ))}
-              </ExternalLink>
-            </li>
-          );
-        })}
-      </ul>
+      <EventLines events={events} timeZone={timeZone} />
       {/*
         Plain `renderedStyles`, as in ProfileCompact: the home page no longer
         takes searchParams, so listing blocks in a bio couldn't be paged.
@@ -143,12 +107,6 @@ const descriptionStyles: ContentStyles = {
   ...renderedStyles,
   p: "text-secondary text-sm max-w-[72ch]",
 };
-
-/** The first ticket, in display order, that has somewhere to buy it. */
-const firstTicketLink = (event: VenueEvent) =>
-  [...(event.tickets ?? [])]
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    .find((ticket) => ticket.externalLink)?.externalLink;
 
 type Content = ReturnType<typeof getLocalizedContent>["content"];
 type ContentNode = { type?: string; content?: unknown[] };
@@ -181,26 +139,3 @@ const firstParagraphOnly = (content: Content): Content => {
       : doc,
   };
 };
-
-const Separator = () => <span className="px-1.5">/</span>;
-
-/** Opens off-site in a new tab; renders plain text when there is no link. */
-const ExternalLink = ({
-  href,
-  children,
-}: {
-  href?: string | null;
-  children: ReactNode;
-}) =>
-  href ? (
-    <a
-      className="hover:brightness-125"
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {children}
-    </a>
-  ) : (
-    <span>{children}</span>
-  );
