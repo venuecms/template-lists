@@ -1,7 +1,14 @@
 import type { LocalizedContent, SearchParams } from "@venuecms/sdk-next";
 import { VenueContent } from "@venuecms/sdk-next";
 
-import { ColumnLeft, ColumnRight, TwoColumnLayout } from "@/components/layout";
+import { cn } from "@/lib/utils";
+
+import {
+  ColumnLeft,
+  ColumnRight,
+  TwoColumnLayout,
+  stickyColumnTitle,
+} from "@/components/layout";
 
 import { contentComponents, pageBodyStyles } from "../ListingBlock";
 import { NewsView } from "../News";
@@ -62,7 +69,11 @@ export const PageListing = ({
       return (
         <TwoColumnLayout>
           <ColumnLeft className="text-sm text-secondary">
-            {title ? <p className="pb-8 text-primary">{title}</p> : null}
+            {title ? (
+              <p className={cn("mb-6 text-primary", stickyColumnTitle)}>
+                {title}
+              </p>
+            ) : null}
           </ColumnLeft>
           <ColumnRight>{body}</ColumnRight>
         </TwoColumnLayout>

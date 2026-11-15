@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 
 import { PageWithParent } from "@/lib/utils/tree";
 
+import { SubPages } from "@/components/Page";
 import { PageListing } from "@/components/PageListing";
 import { setupSSR } from "@/components/utils";
 import { resolvePageListingLayout } from "@/components/utils/pageLayout";
@@ -47,12 +48,21 @@ const PagePage = async ({
       const { content } = getLocalizedContent(page.localizedContent, locale);
 
       return (
-        <PageListing
-          layout={listingLayout}
-          title={content.title ?? undefined}
-          content={content}
-          searchParams={resolvedSearchParams}
-        />
+        <>
+          <PageListing
+            layout={listingLayout}
+            title={content.title ?? undefined}
+            content={content}
+            searchParams={resolvedSearchParams}
+          />
+          {pages ? (
+            <SubPages
+              page={page}
+              pages={pages.records as Array<PageWithParent>}
+              searchParams={resolvedSearchParams}
+            />
+          ) : null}
+        </>
       );
     }
 
