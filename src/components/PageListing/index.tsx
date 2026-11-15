@@ -1,7 +1,15 @@
 import type { LocalizedContent, SearchParams } from "@venuecms/sdk-next";
 import { VenueContent } from "@venuecms/sdk-next";
 
-import { ColumnLeft, ColumnRight, TwoColumnLayout } from "@/components/layout";
+import { cn } from "@/lib/utils";
+
+import {
+  ColumnLeft,
+  ColumnRight,
+  TwoColumnLayout,
+  fadePastTitle,
+  stickyColumnTitle,
+} from "@/components/layout";
 
 import { contentComponents, pageBodyStyles } from "../ListingBlock";
 import { NewsView } from "../News";
@@ -55,15 +63,21 @@ export const PageListing = ({
   // one of those listings sits where its own index does.
   switch (layout) {
     case "products":
-      return <section className="py-20">{body}</section>;
+      // Little above: the grid is the page, so it starts just under the header.
+      // Slides up into place on load (.slide-up-on-load in globals.css).
+      return <section className="slide-up-on-load pb-20 pt-6">{body}</section>;
     case "events":
     case "profiles":
       return (
         <TwoColumnLayout>
           <ColumnLeft className="text-sm text-secondary">
-            {title ? <p className="pb-8 text-primary">{title}</p> : null}
+            {title ? (
+              <p className={cn("mb-6 text-primary", stickyColumnTitle)}>
+                {title}
+              </p>
+            ) : null}
           </ColumnLeft>
-          <ColumnRight>{body}</ColumnRight>
+          <ColumnRight className={fadePastTitle}>{body}</ColumnRight>
         </TwoColumnLayout>
       );
   }

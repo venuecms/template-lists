@@ -1,6 +1,6 @@
 import {
-  EventsSkeleton,
   FeaturedEventsSkeleton,
+  FeaturedProfilesSkeleton,
   ProductsSkeleton,
 } from "@/components/HomePage/LoadingSkeletons";
 
@@ -8,7 +8,7 @@ export default function Loading() {
   return (
     <>
       <FeaturedEventsSkeleton />
-      <EventsSkeleton />
+      <FeaturedProfilesSkeleton />
       <ProductsSkeleton />
     </>
   );

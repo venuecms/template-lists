@@ -28,7 +28,11 @@
 import type { ListingProps } from "@venuecms/sdk-next";
 import { useTranslations } from "next-intl";
 
-import { EventsList, ListEvent } from "@/components/EventList";
+import { EventLines } from "@/components/EventLine";
+import {
+  groupEventsByYear,
+  isPastEventList,
+} from "@/components/EventLine/byYear";
 import { ListProduct } from "@/components/ListProduct";
 import { ListPage, PagesList } from "@/components/PageList";
 import { ProfileCompact } from "@/components/ProfileCompact";
@@ -55,17 +59,34 @@ export const EventListingBlock = ({
     return null;
   }
 
+  const timeZone = site.timeZone ?? undefined;
+
   return (
     <PaginatedListing
       pagination={pagination}
       records={records}
       label={t("events")}
     >
-      <EventsList className="gap-y-12 py-4">
-        {records.map((event) => (
-          <ListEvent key={event.id} event={event} site={site} withImage />
-        ))}
-      </EventsList>
+      {/* Tour-date lines, as on the home page. A past list, which can run
+          back years, gets a heading per year. No top padding, so the first
+          line sits on the page title's baseline when the list opens a page. */}
+      {isPastEventList(records, Date.now()) ? (
+        <div className="flex flex-col gap-8 pb-4">
+          {groupEventsByYear(records, timeZone).map(({ year, events }) => (
+            <section key={year} className="flex flex-col gap-2">
+              <h3 className="text-secondary">{year}</h3>
+              <EventLines events={events} timeZone={timeZone} withArtists />
+            </section>
+          ))}
+        </div>
+      ) : (
+        <EventLines
+          className="pb-4"
+          events={records}
+          timeZone={timeZone}
+          withArtists
+        />
+      )}
     </PaginatedListing>
   );
 };
@@ -87,7 +108,7 @@ export const NewsListingBlock = ({
       records={records}
       label={t("news")}
     >
-      <PagesList className="py-4">
+      <PagesList className="pb-4">
         {records.map((article) => (
           <ListPage
             key={article.id}
@@ -116,7 +137,7 @@ export const PageListingBlock = ({
   }
 
   return (
-    <PagesList className="py-4">
+    <PagesList className="pb-4">
       {records.map((page) => (
         <ListPage
           key={page.id}

@@ -2,60 +2,62 @@ import { getProducts, getSite } from "@venuecms/sdk-next";
 import { getTranslations } from "next-intl/server";
 import { connection } from "next/server";
 
-import { Link } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 import { ListProduct } from "@/components/ListProduct";
+
+import { HERO_FADE_TRIGGER } from "./heroFade";
+import {
+  productGridColumnClasses,
+  productGridConfig,
+  productGridItemClasses,
+} from "./productGridConfig";
 
 export async function ProductsContent() {
   await connection();
 
-  const [{ data: products }, { data: site }, t] = await Promise.all([
-    getProducts({ limit: 10 }),
+  // The site first, since its config sets how many products to fetch. The
+  // layout has already read it, so this is the shared request, not a new one.
+  const [{ data: site }, t] = await Promise.all([
     getSite(),
     getTranslations("shop"),
   ]);
 
   if (!site) return null;
 
-  // Only show for specific sites
-  if (site.name !== "ELNA" && site.name !== "infant tree") {
-    return null;
-  }
+  // At most how many products and columns, set per site in the template
+  // config; the rest are on the shop page.
+  const { maxCount, maxColumns } = productGridConfig(
+    site.settings?.publicSite?.template?.config,
+  );
+  if (!maxCount) return null;
 
-  const topProducts = products?.records.slice(0, 4);
-  const moreProducts = products?.records.slice(4);
+  const { data: products } = await getProducts({ limit: maxCount });
+  const topProducts = products?.records.slice(0, maxCount);
+  const columnClasses = productGridColumnClasses(
+    maxColumns,
+    topProducts?.length ?? 0,
+  );
+  const itemClasses = productGridItemClasses(maxColumns);
 
   return (
     <section className="py-20">
-      <p className="pb-8 text-primary">
-        <Link href="/shop">{t("works")}</Link>
-      </p>
-
-      <div className="grid grid-cols-2 gap-8 pb-20 sm:max-w-full sm:grid-cols-4 xl:grid-cols-4">
+      <div
+        className={cn("grid gap-8 sm:max-w-full", columnClasses)}
+        // Fades the home page hero out as the first row scrolls into view.
+        {...{ [HERO_FADE_TRIGGER]: "" }}
+      >
         {topProducts?.length
           ? topProducts.map((product) => (
               <ListProduct
                 key={product.slug}
                 featured={true}
+                className={itemClasses}
                 product={product}
                 site={site}
               />
             ))
           : t("no_products_found")}
-      </div>
-      {moreProducts?.length ? (
-        <div className="grid grid-cols-2 gap-8 sm:max-w-full lg:grid-cols-[repeat(4,minmax(1rem,32rem))] xl:grid-cols-[repeat(6,minmax(1rem,32rem))]">
-          {moreProducts.map((product) => (
-            <ListProduct key={product.slug} product={product} site={site} />
-          ))}
-        </div>
-      ) : null}
-      <div className="w-full grid-cols-3 sm:grid">
-        <span></span>
-        <span></span>
-        <Link className="flex w-full sm:relative sm:flex-row" href="/shop">
-          → {t("see_all_works")}
-        </Link>
       </div>
     </section>
   );

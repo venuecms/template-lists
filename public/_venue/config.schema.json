@@ -84,6 +84,21 @@
       "description": "Removes the opacity overlay",
       "title": "Remove Hero Opacity Overlay"
     },
+    "homeProductCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 24,
+      "default": 2,
+      "description": "The most products the home page shows. Set to 0 to hide the products section.",
+      "title": "Home Page Products (Max)"
+    },
+    "homeProductColumns": {
+      "type": "integer",
+      "enum": [1, 2, 3, 4, 5, 6],
+      "default": 2,
+      "description": "The most columns the home page products sit in; fewer products use fewer columns. Phones show one column below four, and two from four up.",
+      "title": "Home Page Product Columns (Max)"
+    },
     "colorBackground": {
       "type": "string",
       "format": "color",

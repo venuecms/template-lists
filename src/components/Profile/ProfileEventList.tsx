@@ -11,12 +11,21 @@ export const ProfileEventList = async ({
 }: {
   header: string;
   slug: string;
-  filter?: { upcoming?: boolean; lt?: number; dir?: "asc" | "desc" };
+  /**
+   * `past` lists events that started before now. It is a flag rather than a
+   * timestamp the caller passes, because the time can only be read after
+   * `connection()` below: read during prerender, it would freeze into the
+   * shell.
+   */
+  filter?: { upcoming?: boolean; past?: boolean; dir?: "asc" | "desc" };
 }) => {
   await connection();
 
+  const { past, ...rest } = filter ?? {};
+  const query = past ? { ...rest, lt: Date.now() } : rest;
+
   const [{ data: events }, { data: site }] = await Promise.all([
-    getProfileEvents({ slug, limit: 60, ...filter }),
+    getProfileEvents({ slug, limit: 60, ...query }),
     getSite(),
   ]);
 

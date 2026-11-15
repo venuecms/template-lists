@@ -4,6 +4,8 @@ import { connection } from "next/server";
 import { EventFeatured } from "@/components/EventFeatured";
 import { VenueImage } from "@/components/VenueImage";
 
+import { HeroBackground } from "./HeroBackground";
+
 export async function FeaturedEventsContent({ locale }: { locale: string }) {
   await connection();
 
@@ -22,14 +24,16 @@ export async function FeaturedEventsContent({ locale }: { locale: string }) {
   return (
     <>
       {showHeroImage ? (
-        <div className="w-vw absolute left-0 top-0 -z-30 h-svh w-screen bg-red-300">
+        // Fixed to the viewport so the page content scrolls over the image;
+        // fades out when the product grid arrives.
+        <HeroBackground className="fixed inset-0 -z-30">
           <VenueImage aspect="video" image={webSiteSettings?.image} />
           {noHeroOverlay ? null : (
-            <div className="absolute left-0 top-0 h-full w-full bg-[#1F1C1F] bg-cover bg-center bg-no-repeat opacity-80">
+            <div className="absolute left-0 top-0 h-full w-full bg-[#1F1C1F] bg-cover bg-center bg-no-repeat opacity-90">
               <div className="absolute inset-0 bg-[#1F1C1F]"></div>
             </div>
           )}
-        </div>
+        </HeroBackground>
       ) : null}
       {featuredEvents?.records.length ? (
         <div className="flex flex-col pb-16">

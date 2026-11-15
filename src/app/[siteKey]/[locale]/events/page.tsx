@@ -1,19 +1,8 @@
-import { getGenerateMetadata } from "@/lib";
 import { Params } from "@/types";
-import { getPage } from "@venuecms/sdk-next";
 
-import { EventsListSection } from "@/components/EventsPage";
-import { setupSSR } from "@/components/utils";
+import { redirectToPage } from "@/components/utils/redirectToPage";
 
-export const generateMetadata = getGenerateMetadata(() =>
-  getPage({ slug: "events" }),
-);
+const Page = ({ params }: { params: Promise<Params> }) =>
+  redirectToPage("events", params);
 
-const EventsPage = async ({ params }: { params: Promise<Params> }) => {
-  const { locale } = await params;
-  await setupSSR({ params });
-
-  return <EventsListSection locale={locale} />;
-};
-
-export default EventsPage;
+export default Page;

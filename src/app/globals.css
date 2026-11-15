@@ -237,3 +237,57 @@ html.darkGreyCM {
   --nav: 193, 50%, 85%, 1;
   --overlay: 280, 5%, 12%, 0.8;
 }
+
+/* Where a page's title pins on desktop (stickyColumnTitle), shared with the
+   fade below so the two meet at the same line. */
+:root {
+  --sticky-title-top: 7rem;
+}
+
+/* Text in a column beside a sticky title fades out as it scrolls up past the
+   title's line: opaque while level with it, gone once above it. A
+   scroll-driven animation, so nothing runs on scroll in JS; browsers without
+   one just don't fade. Desktop only, where the title sticks. */
+@keyframes fade-past-title {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  @supports (animation-timeline: view()) {
+    .fade-past-title :is(p, li, h1, h2, h3, h4, h5, h6) {
+      animation: fade-past-title linear both;
+      /* Animation after the shorthand, which would otherwise reset it. The
+         inset moves the timeline's top edge down to the title's line. */
+      animation-timeline: view(block var(--sticky-title-top) 0px);
+      animation-range: exit 0% exit 100%;
+    }
+
+    /* A list item is the line; the paragraphs inside it are not lines of
+       their own, or they'd fade twice over. */
+    .fade-past-title li :is(p, li) {
+      animation: none;
+    }
+  }
+}
+
+/* Content arriving on page load: rises into place as it fades in. A plain
+   class rather than a Tailwind arbitrary value, so it's always in the CSS
+   whatever the dev server last scanned. Left still for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .slide-up-on-load {
+    animation: slide-up 700ms ease-out both;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

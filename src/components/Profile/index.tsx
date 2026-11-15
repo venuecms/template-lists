@@ -66,7 +66,7 @@ export const Profile = ({
             <ProfileEventList
               header={t("past_events")}
               slug={profile.slug}
-              filter={{ lt: Date.now(), dir: "desc" }}
+              filter={{ past: true, dir: "desc" }}
             />
           </Suspense>
         </ErrorBoundary>
