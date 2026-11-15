@@ -1,8 +1,8 @@
 export { FeaturedEventsSection } from "./FeaturedEventsSection";
-export { EventsSection } from "./EventsSection";
+export { FeaturedProfilesSection } from "./FeaturedProfilesSection";
 export { ProductsSection } from "./ProductsSection";
 export {
   FeaturedEventsSkeleton,
-  EventsSkeleton,
+  FeaturedProfilesSkeleton,
   ProductsSkeleton,
 } from "./LoadingSkeletons";

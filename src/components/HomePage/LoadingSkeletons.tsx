@@ -1,4 +1,3 @@
-import { EventsList } from "@/components/EventList";
 import { ColumnLeft, ColumnRight, TwoColumnLayout } from "@/components/layout";
 import { Skeleton } from "@/components/ui/Input/Skeleton";
 
@@ -44,30 +43,20 @@ export function FeaturedEventsSkeleton() {
   );
 }
 
-export function EventsSkeleton() {
+export function FeaturedProfilesSkeleton() {
   return (
-    <TwoColumnLayout>
-      <ColumnLeft className="hidden text-sm text-secondary sm:flex">
-        <div className="flex flex-col gap-2">
-          <Skeleton />
-          <Skeleton />
-          <Skeleton className="w-3/4" />
+    <section className="grid grid-cols-1 gap-12 py-16 sm:grid-cols-3 sm:py-24 lg:gap-36">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="flex flex-col gap-4">
+          <Skeleton className="w-32" />
+          <div className="flex flex-col gap-2">
+            <Skeleton className="w-56" />
+            <Skeleton className="w-56" />
+            <Skeleton className="w-48" />
+          </div>
         </div>
-      </ColumnLeft>
-      <ColumnRight>
-        <EventsList>
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="flex flex-col gap-8 pb-8 sm:gap-0">
-              <div className="flex flex-col gap-1">
-                <Skeleton className="w-32" />
-                <Skeleton className="w-48" />
-                <Skeleton className="w-24" />
-              </div>
-            </div>
-          ))}
-        </EventsList>
-      </ColumnRight>
-    </TwoColumnLayout>
+      ))}
+    </section>
   );
 }
 
