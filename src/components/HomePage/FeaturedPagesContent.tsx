@@ -36,15 +36,25 @@ export async function FeaturedPagesContent({ locale }: { locale: string }) {
 
   if (!featured.length) return null;
 
+  const isVideo = (page: VenuePage) => hasTag(page, "video");
+  // This is the last section on the page, so with a video last the page ends
+  // flush with the bottom of the player: scrolled to the bottom, the expanded
+  // video fills the screen exactly.
+  const endsWithVideo = isVideo(featured[featured.length - 1]);
+
   return (
-    <section className="flex flex-col gap-16 py-20">
+    <section
+      className={`flex flex-col gap-16 pt-20 ${endsWithVideo ? "" : "pb-20"}`}
+    >
       {featured.map((page) => {
         const { content } = getLocalizedContent(page.localizedContent, locale);
         // Plain `renderedStyles`: the home page takes no searchParams, so a
         // listing block in a page body couldn't be paged here.
         const body = (
           <VenueContent
-            className="flex flex-col gap-6"
+            // Empty paragraphs (often left after an embed) would add gaps,
+            // and space below a video at the end of the page.
+            className="flex flex-col gap-6 [&>p:empty]:hidden"
             content={content}
             contentStyles={renderedStyles}
           />
@@ -54,11 +64,7 @@ export async function FeaturedPagesContent({ locale }: { locale: string }) {
           // Labelled by the hidden title, so the section still has a name for
           // screen readers.
           <article key={page.id} aria-label={content.title ?? undefined}>
-            {hasTag(page, "video") ? (
-              <FullBleedOnView>{body}</FullBleedOnView>
-            ) : (
-              body
-            )}
+            {isVideo(page) ? <FullBleedOnView>{body}</FullBleedOnView> : body}
           </article>
         );
       })}
