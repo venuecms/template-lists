@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-import { formatDate } from "@/components/utils";
+import { formatDateRange } from "@/components/utils";
 
 /**
  * A run of events as one-line tour dates:
@@ -58,8 +58,10 @@ export const EventLine = ({
 }) => {
   const locale = useLocale();
 
-  const date = formatDate({
-    date: event.startDate,
+  // "12 Mar" for one day; a multi-day event spans its range with the year.
+  const date = formatDateRange({
+    start: event.startDate,
+    end: event.endDate,
     withTime: false,
     timeZone,
     template: "d MMM",
