@@ -82,12 +82,11 @@ const ProfileEvents = ({
   return (
     <div className="flex flex-col gap-4">
       <Link
-        className="text-secondary hover:brightness-125"
+        className="text-primary hover:brightness-125"
         href={`/artists/${profile.slug}`}
       >
         {content.title}
       </Link>
-      <EventLines events={events} timeZone={timeZone} />
       {/*
         Plain `renderedStyles`, as in ProfileCompact: the home page no longer
         takes searchParams, so listing blocks in a bio couldn't be paged.
@@ -97,6 +96,7 @@ const ProfileEvents = ({
         content={firstParagraphOnly(content)}
         contentStyles={descriptionStyles}
       />
+      <EventLines events={events} timeZone={timeZone} />
     </div>
   );
 };

@@ -29,7 +29,7 @@ export async function FeaturedEventsContent({ locale }: { locale: string }) {
         <HeroBackground className="fixed inset-0 -z-30">
           <VenueImage aspect="video" image={webSiteSettings?.image} />
           {noHeroOverlay ? null : (
-            <div className="absolute left-0 top-0 h-full w-full bg-[#1F1C1F] bg-cover bg-center bg-no-repeat opacity-80">
+            <div className="absolute left-0 top-0 h-full w-full bg-[#1F1C1F] bg-cover bg-center bg-no-repeat opacity-90">
               <div className="absolute inset-0 bg-[#1F1C1F]"></div>
             </div>
           )}
