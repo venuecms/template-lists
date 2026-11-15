@@ -55,7 +55,8 @@ export const PageListing = ({
   // one of those listings sits where its own index does.
   switch (layout) {
     case "products":
-      return <section className="py-20">{body}</section>;
+      // Little above: the grid is the page, so it starts just under the header.
+      return <section className="pb-20 pt-6">{body}</section>;
     case "events":
     case "profiles":
       return (
