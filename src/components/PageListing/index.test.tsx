@@ -90,12 +90,13 @@ describe("PageListing", () => {
     },
   );
 
-  // The shop sits in a section of its own; the other two head a two-column
-  // layout with the page's title, the way /artists and /events do.
-  it("frames the products listing the way /shop frames its own", async () => {
+  // The products grid sits in a full-width section of its own, starting just
+  // under the header; the other two head a two-column layout with the page's
+  // title.
+  it("frames the products listing in a full-width section", async () => {
     const html = await renderListing({ layout: "products", content: body });
 
-    expect(html).toContain('<section class="py-20">');
+    expect(html).toContain('<section class="pb-20 pt-6">');
   });
 
   it.each(["events", "profiles"] as const)(
